@@ -10,5 +10,6 @@ body {
 
 .error-msg{
   color: #f50;
-  padding-left: 10px
+  padding-left: 15px;
+  padding-top: 10px;
 }

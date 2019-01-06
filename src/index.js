@@ -13,7 +13,7 @@ import './config'
 import './index.css'
 
 const store = createStore(reducers, compose(
-    applyMiddleware(thunk),
+    applyMiddleware(thunk)
 ))
 function Boss(){
 	return <h2>BOSS页面</h2>

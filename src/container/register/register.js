@@ -1,6 +1,7 @@
 import React from 'react'
 import Logo from '../../component/logo/logo'
 import {List, InputItem, Radio, WingBlank, Button, WhiteSpace} from 'antd-mobile'
+import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {register} from '../../redux/user.redux'
 
@@ -24,18 +25,19 @@ class Register extends React.Component{
         })
     }
     hanleRegister(){
-        console.log(this.props)
-        //this.props.register(this.state)
+        //console.log(this.props)
+        this.props.register(this.state)
     }
     render(){
         return(
             <div>
+                {this.props.state.redirectTo?<Redirect to={this.props.state.redirectTo}/>:null}
                 <WingBlank>
                 <Logo/>
                 <List>
-                    {this.props.msg?<p className='error-msg'>this.props.msg</p>:null}
+                    {this.props.state.msg?<p className='error-msg'>{this.props.state.msg}</p>:null}
                     <InputItem
-                        onChange={v=>this.hanleChange('pwd',v)}
+                        onChange={v=>this.hanleChange('user',v)}
                     >用户名</InputItem>
                     <WhiteSpace/>
                     <InputItem
@@ -65,4 +67,4 @@ class Register extends React.Component{
         )
     }
 }
-export default connect(state=>({stt:state.user},{register}))(Register)
+export default connect((state)=>({state:state.user}),{register})(Register)
