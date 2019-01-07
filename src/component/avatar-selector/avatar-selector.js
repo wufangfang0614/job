@@ -24,9 +24,7 @@ class AvatarSelector extends React.Component{
                     data={avatarList}
                     columnNum={5}
                     onClick={elm=>{
-                        this.setState(elm,()=>{
-                            
-                        })
+                        this.setState(elm)
                         this.props.selectAvatar(elm.text)
                     }}
                 />
