@@ -67,4 +67,5 @@ class Register extends React.Component{
         )
     }
 }
+//[mapStateToProps], [mapDispatchToProps]  两个都要是对象
 export default connect(state=>state.user,{register})(Register)
