@@ -1,8 +1,9 @@
 import React from 'react'
 import Logo from './../../component/logo/logo'
 import {List,InputItem,WingBlank,WhiteSpace,Button} from 'antd-mobile'
-
-
+import { connect } from 'react-redux'
+import {Redirect} from 'react-router-dom'
+import {login} from '../../redux/user.redux'
 class Login extends React.Component{
     constructor(props){
         super(props)
@@ -22,25 +23,28 @@ class Login extends React.Component{
         })
     }
     handleLogin(){
-        console.log(this.state)
+        this.props.login(this.state)
     }
     render(){
         return(
             <div>
+                {this.props.redirectTo?<Redirect to={this.props.redirectTo}/>:null}
                 <Logo/>
                 <WingBlank>
                     <List>
+                        {this.props.msg?<p className="error-msg">{this.props.msg}</p>:null}
                         <InputItem
-                            onChange={v=>this.UNSAFE_componentWillMount.handleChange('user',v)}
+                            onChange={v=>this.handleChange('user',v)}
                         >用户</InputItem>
                         <WhiteSpace/>
                         <InputItem
-                            onChange={v=>this.UNSAFE_componentWillMount.handleChange('pwd',v)}
+                            type="password"
+                            onChange={v=>this.handleChange('pwd',v)}
                         >密码</InputItem>
                         <WhiteSpace/>
-                        <Button onChange={this.handleLogin}>登录</Button>
+                        <Button type="primary" onClick={this.handleLogin}>登录</Button>
                         <WhiteSpace/>
-                        <Button onChange={this.register}>注册</Button>
+                        <Button type="primary" onClick={this.register}>注册</Button>
                     </List>
                 </WingBlank>
             </div>
@@ -48,4 +52,4 @@ class Login extends React.Component{
         )
     }
 }
-export default Login
+export default connect(state=>state.user,{login})(Login)

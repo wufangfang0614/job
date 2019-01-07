@@ -13,7 +13,8 @@ import './config'
 import './index.css'
 
 const store = createStore(reducers, compose(
-    applyMiddleware(thunk)
+	applyMiddleware(thunk),
+	window.devToolsExtension?window.devToolsExtension():f=>f
 ))
 function Boss(){
 	return <h2>BOSS页面</h2>
@@ -22,6 +23,7 @@ ReactDom.render(
 	(<Provider store={store}>
 		<BrowserRouter>
 			<div>
+				
 				<AuthRoute></AuthRoute>
 				<Route path='/boss' component={Boss}></Route>
 				<Route path='/login' component={Login}></Route>

@@ -25,17 +25,17 @@ class Register extends React.Component{
         })
     }
     hanleRegister(){
-        //console.log(this.props)
+        console.log(this.props)
         this.props.register(this.state)
     }
     render(){
         return(
             <div>
-                {this.props.state.redirectTo?<Redirect to={this.props.state.redirectTo}/>:null}
+                {this.props.redirectTo?<Redirect to={this.props.redirectTo}/>:null}
                 <WingBlank>
                 <Logo/>
                 <List>
-                    {this.props.state.msg?<p className='error-msg'>{this.props.state.msg}</p>:null}
+                    {this.props.msg?<p className='error-msg'>{this.props.msg}</p>:null}
                     <InputItem
                         onChange={v=>this.hanleChange('user',v)}
                     >用户名</InputItem>
@@ -67,4 +67,4 @@ class Register extends React.Component{
         )
     }
 }
-export default connect((state)=>({state:state.user}),{register})(Register)
+export default connect(state=>state.user,{register})(Register)
