@@ -4,7 +4,7 @@ import AvatarSelector from './../../component/avatar-selector/avatar-selector'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {update} from '../../redux/user.redux'
-class BossInfo extends React.Component{
+class GeniusInfo extends React.Component{
     constructor(props) {
 		super(props)
 		this.state = {
@@ -32,20 +32,14 @@ class BossInfo extends React.Component{
             <div>
                 {redirect}
                 {redirect&&redirect!=path?<Redirect to={redirect}/>:null}
-                <NavBar mode="dark" >BOSS完善信息页</NavBar>
+                <NavBar mode="dark" >牛人完善信息页</NavBar>
                 <AvatarSelector
                 selectAvatar={(imgname)=>this.selectAvatar(imgname)}
                 >
                     
                 </AvatarSelector>
                 <InputItem onChange={v=>this.onChange('title',v)}>
-                招聘职位
-                </InputItem>
-                <InputItem onChange={v=>this.onChange('company',v)}>
-                公司名称
-                </InputItem>
-                <InputItem onChange={v=>this.onChange('money',v)}>
-                职位薪资
+                求职行位
                 </InputItem>
                 <TextareaItem
                     onChange={v=>this.onChange('desc',v)}
@@ -66,4 +60,4 @@ class BossInfo extends React.Component{
         )
     }
 }
-export default connect(state=>state.user,{update})(BossInfo)
+export default connect(state=>state.user,{update})(GeniusInfo)

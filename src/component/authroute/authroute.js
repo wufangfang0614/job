@@ -21,9 +21,7 @@ class AuthRoute extends React.Component{
             })
     }
     render(){
-        return(
-            <p>跳转路由</p>
-        )
+        return null
     }
 }
 

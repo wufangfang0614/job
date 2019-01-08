@@ -6,14 +6,11 @@ const model = require('./model.js')
 const User = model.getModel('user')
 const _filter = {'pwd':0,'__v':0}
 
-Router.get('/info',function(req,res){
-    console.log("into info")
-    return res.json({code:0})
-})
 Router.get('/list',function(req, res){
-	// User.remove({},function(e,d){})
-	User.find({},function(err,doc){
-		return res.json(doc)
+    // User.remove({},function(e,d){})
+    const { type } = req.query
+	User.find({type},function(err,doc){
+		return res.json({code:0,data:doc})
 	})
 })
 Router.post('/login',function(req,res){
@@ -39,7 +36,7 @@ Router.post('/register',function(req,res){
             }
             const {user,type,_id} = d
             res.cookie('userid',_id)
-            return res.json({code:0})
+            return res.json({code:0,data:{user, type, _id}})
         })
     })
 
@@ -57,6 +54,21 @@ Router.get('/info',function(req,res){
             res.json({code:0,data:doc})
         }
     })
+})
+Router.post('/update',function(req,res){
+	const userid = req.cookies.userid
+	if (!userid) {
+		return json.dumps({code:1})
+	}
+    const body = req.body
+	User.findByIdAndUpdate(userid,body,function(err,doc){
+        console.log(doc)
+		const data = Object.assign({},{
+			user:doc.user,
+			type:doc.type
+		},body)
+		return res.json({code:0,data})
+	})
 })
 function md5Pwd(pwd){
 	const salt = 'imooc_is_good_3957x8yza6!@#IUHJh~~'
