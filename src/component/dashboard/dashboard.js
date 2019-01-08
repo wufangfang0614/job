@@ -6,6 +6,7 @@ import Boss from '../../component/boss/boss'
 import Genius from '../../component/genius/genius'
 import User from '../../component/user/user'
 import NavLinkBar from '../../component/navlink/navlink'
+import {login} from '../../redux/user.redux'
 function Msg(){
 	return <h2>消息列表页面</h2>
 }
@@ -13,7 +14,9 @@ function Msg(){
 class DashBoard extends React.Component{
     render(){
         const {pathname} = this.props.location
-        const user = this.props.user
+		const user = this.props.user
+		console.log('user')
+		console.log(user)
         const navList = [
 			{
 				path:'/boss',
@@ -63,4 +66,4 @@ class DashBoard extends React.Component{
         )
     }
 }
-export default connect(state=>state.user)(DashBoard)
+export default connect(state=>state)(DashBoard)
