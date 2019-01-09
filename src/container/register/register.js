@@ -4,29 +4,17 @@ import {List, InputItem, Radio, WingBlank, Button, WhiteSpace} from 'antd-mobile
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {register} from '../../redux/user.redux'
-
+import imoocForm from '../../component/imooc-form/imooc-form'
 const RadioItem = Radio.RadioItem
 
 class Register extends React.Component{
     constructor(props){
         super(props)
-        this.state = {
-            user:'',
-            pwd:'',
-            repeatpwd:'',
-            type:'genius' //或者boss
-        }
         this.hanleRegister = this.hanleRegister.bind(this);
-        this.hanleChange = this.hanleChange.bind(this);
-    }
-    hanleChange(key,val){
-        this.setState({
-            [key]:val
-        })
     }
     hanleRegister(){
         console.log(this.props)
-        this.props.register(this.state)
+        this.props.register(this.props.state)
     }
     render(){
         return(
@@ -37,27 +25,27 @@ class Register extends React.Component{
                 <List>
                     {this.props.msg?<p className='error-msg'>{this.props.msg}</p>:null}
                     <InputItem
-                        onChange={v=>this.hanleChange('user',v)}
+                        onChange={v=>this.props.handleChange('user',v)}
                     >用户名</InputItem>
                     <WhiteSpace/>
                     <InputItem
                         type="password"
-                        onChange={v=>this.hanleChange('pwd',v)}
+                        onChange={v=>this.props.handleChange('pwd',v)}
                     >密码</InputItem>
                     <WhiteSpace/>
                     <InputItem
                         type="password"
-                        onChange={v=>this.hanleChange('repeatpwd',v)}
+                        onChange={v=>this.props.handleChange('repeatpwd',v)}
                     >确认密码</InputItem>
                     <WhiteSpace/>
                     <RadioItem
-                        checked={this.state.type=="genius"}
-                        onChange={v=>this.hanleChange('type','genius')}
+                        checked={this.props.state.type=="genius"}
+                        onChange={v=>this.props.handleChange('type','genius')}
                     >牛人</RadioItem>
                     <WhiteSpace/>
                     <RadioItem
-                        checked={this.state.type=="boss"}
-                        onChange={v=>this.hanleChange('type','boss')}
+                        checked={this.props.state.type=="boss"}
+                        onChange={v=>this.props.handleChange('type','boss')}
                     >BOSS</RadioItem>
                     <WhiteSpace/>
                     <Button type="primary" onClick={this.hanleRegister}>注册</Button>  
@@ -68,4 +56,4 @@ class Register extends React.Component{
     }
 }
 //[mapStateToProps], [mapDispatchToProps]  两个都要是对象
-export default connect(state=>state.user,{register})(Register)
+export default imoocForm(connect(state=>state.user,{register})(Register))
