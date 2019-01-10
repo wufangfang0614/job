@@ -4,6 +4,7 @@ const Router = express.Router()
 const model = require('./model.js')
 
 const User = model.getModel('user')
+const Chat = model.getModel('chat')
 const _filter = {'pwd':0,'__v':0}
 
 Router.get('/list',function(req, res){
@@ -70,8 +71,17 @@ Router.post('/update',function(req,res){
 		return res.json({code:0,data})
 	})
 })
+Router.get('/getmsglist',function(req,res){
+    const user = req.cookies.user
+    Chat.find({},function(err,doc){
+        if(!err){
+            return res.json({code:0,msgs:doc})
+        }
+    })
+})
 function md5Pwd(pwd){
 	const salt = 'imooc_is_good_3957x8yza6!@#IUHJh~~'
 	return utils.md5(utils.md5(pwd+salt))
 }
+
 module.exports = Router
