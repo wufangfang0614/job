@@ -7,14 +7,17 @@ import {getMsgList,sendMsg,recvMsg} from '../../redux/chat.redux'
 // socket.on('recvmsg',function(data){
 //     console.log(data)
 // })
+const Item = List.Item
 class Chat extends React.Component{
 	constructor(props){
 		super(props)
 		this.state = {text:'',msg:[]}
 	}
 	componentDidMount(){
-        this.props.getMsgList()
-        this.props.recvMsg()
+        if(!this.props.chat.chatmsg.length){
+			this.props.getMsgList()
+			this.props.recvMsg()
+		}
 	}
 	handleSubmit(){
 		//socket.emit('sendmsg',{text:this.state.text})
@@ -28,9 +31,49 @@ class Chat extends React.Component{
 		
 	}
 	render(){
+		const userid = this.props.match.params.user
+		//console.log('userid',userid)
+		const users= this.props.chat.users
 		
+		if(!users[userid]){
+			return null
+		}
 		return (
 			<div id='chat-page'>
+			<NavBar
+				mode="dark"
+				icon={<Icon type="left"/>}
+				onLeftClick={()=>{
+					this.props.history.goBack()
+				}}
+			>
+				{users[userid].name}
+			</NavBar>
+			<div>
+				{this.props.chat.chatmsg.map(v=>{
+					const avatar = require(`../../img/${users[v.from].avatar}.png`)
+					console.log('v.from',v.from)
+					console.log('v.form==userid:',userid==v.form)
+					console.log('userid',userid)
+					return 1?
+					(<List key={v._id}>
+						<Item
+							thumb={avatar}
+						>
+							{v.content}
+						</Item>
+					</List>):(
+					<List key={v._id}>
+						<Item
+							extra={<img src={avatar} alt=""/>}
+							
+							className="chat-me">
+							{v.content}
+						</Item>
+					</List>
+					)
+				})}
+			</div>
 	
 
 				<div className="stick-footer">

@@ -6,12 +6,16 @@ import Boss from '../../component/boss/boss'
 import Genius from '../../component/genius/genius'
 import User from '../../component/user/user'
 import NavLinkBar from '../../component/navlink/navlink'
-import {login} from '../../redux/user.redux'
-function Msg(){
-	return <h2>消息列表页面</h2>
-}
+import Chat from '../../component/chat/chat'
+import {getMsgList,recvMsg} from '../../redux/chat.redux'
 
 class DashBoard extends React.Component{
+	componentDidMount(){
+		console.log("進入dashboard了")
+		this.props.getMsgList()
+		this.props.recvMsg()
+		
+	}
     render(){
         const {pathname} = this.props.location
 		const user = this.props.user
@@ -39,7 +43,7 @@ class DashBoard extends React.Component{
 				text:'消息',
 				icon:'msg',
 				title:'消息列表',
-				component:Msg
+				component:Chat
 			},
 			{
 				path:'/me',
@@ -66,4 +70,4 @@ class DashBoard extends React.Component{
         )
     }
 }
-export default connect(state=>state)(DashBoard)
+export default connect(state=>state,{getMsgList,recvMsg})(DashBoard)
