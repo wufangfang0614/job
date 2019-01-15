@@ -3,6 +3,7 @@ import {List,InputItem,NavBar,Icon, Grid} from 'antd-mobile'
 //import io from 'socket.io-client'
 import {connect} from 'react-redux'
 import {getMsgList,sendMsg,recvMsg} from '../../redux/chat.redux'
+import {getChatId} from '../../utils'
 //const socket = io('ws://localhost:9093')
 // socket.on('recvmsg',function(data){
 //     console.log(data)
@@ -18,6 +19,13 @@ class Chat extends React.Component{
 			this.props.getMsgList()
 			this.props.recvMsg()
 		}
+		
+	}
+	//不懂为什么要手动派发一个事件
+	fixCarousel(){
+		setTimeout(function(){
+			window.dispatchEvent(new Event('resize'))
+		},0)
 	}
 	handleSubmit(){
 		//socket.emit('sendmsg',{text:this.state.text})
@@ -26,11 +34,18 @@ class Chat extends React.Component{
         const to = this.props.match.params.user
         const msg = this.state.text
         this.props.sendMsg({from,to,msg})
-        this.setState({text:''})
+        this.setState({
+			text:'',
+			showEmoji:false
+		})
 
 		
 	}
 	render(){
+		const emoji = '😀 😃 😄 😁 😆 😅 😂 😊 😇 🙂 🙃 😉 😌 😍 😘 😗 😙 😚 😋 😜 😝 😛 🤑 🤗 🤓 😎 😏 😒 😞 😔 😟 😕 🙁 😣 😖 😫 😩 😤 😠 😡 😶 😐 😑 😯 😦 😧 😮 😲 😵 😳 😱 😨 😰 😢 😥 😭 😓 😪 😴 🙄 🤔 😬 🤐 😷 🤒 🤕 😈 👿 👹 👺 💩 👻 💀 ☠️ 👽 👾 🤖 🎃 😺 😸 😹 😻 😼 😽 🙀 😿 😾 👐 🙌 👏 🙏 👍 👎 👊 ✊ 🤘 👌 👈 👉 👆 👇 ✋  🖐 🖖 👋  💪 🖕 ✍️  💅 🖖 💄 💋 👄 👅 👂 👃 👁 👀 '
+										.split(' ')
+										.filter(v=>v)
+										.map(v=>({text:v}))
 		const userid = this.props.match.params.user
 		//console.log('userid',userid)
 		const users= this.props.chat.users
@@ -38,6 +53,8 @@ class Chat extends React.Component{
 		if(!users[userid]){
 			return null
 		}
+		const chatid = getChatId(userid,this.props.user._id)
+		const chatmsgs = this.props.chat.chatmsg.filter(v=>v.chatid==chatid)
 		return (
 			<div id='chat-page'>
 			<NavBar
@@ -50,12 +67,12 @@ class Chat extends React.Component{
 				{users[userid].name}
 			</NavBar>
 			<div>
-				{this.props.chat.chatmsg.map(v=>{
+				{chatmsgs.map(v=>{
 					const avatar = require(`../../img/${users[v.from].avatar}.png`)
 					console.log('v.from',v.from)
 					console.log('v.form==userid:',userid==v.form)
 					console.log('userid',userid)
-					return 1?
+					return userid==v.form?
 					(<List key={v._id}>
 						<Item
 							thumb={avatar}
@@ -86,14 +103,36 @@ class Chat extends React.Component{
 								this.setState({text:v})
 							}}
 							extra={
-
 								<div>
-								
+									<span
+										style={{marginRight:15}}
+										onClick={()=>{
+											this.fixCarousel()
+											this.setState({
+												showEmoji:!this.state.showEmoji
+											})
+										}}
+									>
+									😀
+									</span>
 									<span onClick={()=>this.handleSubmit()} >发送</span>
 								</div>
 							}
 						></InputItem>
 					</List>
+					{this.state.showEmoji?<Grid 
+						data={emoji}
+						columnNum={9}
+						carouselMaxRow={4}
+						isCarousel={true}
+						onClick={el=>{
+							this.setState({
+								text:this.state.text+el.text
+							})
+						}
+
+						}
+					/>:null}
 					
 				</div>
 			</div>

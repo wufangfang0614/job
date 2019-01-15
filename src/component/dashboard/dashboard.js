@@ -11,9 +11,11 @@ import {getMsgList,recvMsg} from '../../redux/chat.redux'
 
 class DashBoard extends React.Component{
 	componentDidMount(){
-		console.log("進入dashboard了")
-		this.props.getMsgList()
-		this.props.recvMsg()
+		if(!this.props.chat.chatmsg.length){
+			console.log("進入dashboard了")
+			this.props.getMsgList()
+			this.props.recvMsg()
+		}
 		
 	}
     render(){
