@@ -6,7 +6,7 @@ import Boss from '../../component/boss/boss'
 import Genius from '../../component/genius/genius'
 import User from '../../component/user/user'
 import NavLinkBar from '../../component/navlink/navlink'
-import Chat from '../../component/chat/chat'
+import Msg from '../../component/msg/msg'
 import {getMsgList,recvMsg} from '../../redux/chat.redux'
 
 class DashBoard extends React.Component{
@@ -45,7 +45,7 @@ class DashBoard extends React.Component{
 				text:'消息',
 				icon:'msg',
 				title:'消息列表',
-				component:Chat
+				component:Msg
 			},
 			{
 				path:'/me',

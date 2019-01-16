@@ -2,7 +2,7 @@ import React from 'react'
 import {List,InputItem,NavBar,Icon, Grid} from 'antd-mobile'
 //import io from 'socket.io-client'
 import {connect} from 'react-redux'
-import {getMsgList,sendMsg,recvMsg} from '../../redux/chat.redux'
+import {getMsgList,sendMsg,recvMsg,readMsg} from '../../redux/chat.redux'
 import {getChatId} from '../../utils'
 //const socket = io('ws://localhost:9093')
 // socket.on('recvmsg',function(data){
@@ -19,7 +19,11 @@ class Chat extends React.Component{
 			this.props.getMsgList()
 			this.props.recvMsg()
 		}
-		
+	}
+	//处理在当前消息对话框接收消息，未读消息不会改变的问题
+	componentWillUnmount(){
+		const to = this.props.match.params.user
+		this.props.readMsg(to)
 	}
 	//不懂为什么要手动派发一个事件
 	fixCarousel(){
@@ -66,13 +70,13 @@ class Chat extends React.Component{
 			>
 				{users[userid].name}
 			</NavBar>
-			<div>
+			
 				{chatmsgs.map(v=>{
 					const avatar = require(`../../img/${users[v.from].avatar}.png`)
-					console.log('v.from',v.from)
-					console.log('v.form==userid:',userid==v.form)
-					console.log('userid',userid)
-					return userid==v.form?
+					// console.log('v.from',v.from)
+					// console.log('v.form==userid:',userid==v.form)
+					// console.log('userid',userid)
+					return userid===v.from?
 					(<List key={v._id}>
 						<Item
 							thumb={avatar}
@@ -90,7 +94,8 @@ class Chat extends React.Component{
 					</List>
 					)
 				})}
-			</div>
+				
+			
 	
 
 				<div className="stick-footer">
@@ -140,4 +145,4 @@ class Chat extends React.Component{
 	}
 }
 
-export default connect(state=>state,{getMsgList,sendMsg,recvMsg})(Chat)
+export default connect(state=>state,{getMsgList,sendMsg,recvMsg,readMsg})(Chat)
